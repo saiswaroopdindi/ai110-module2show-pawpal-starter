@@ -47,18 +47,21 @@ pip install -r requirements.txt
 Paste a sample of your app's CLI or Streamlit output here so a reader can see what a generated plan looks like:
 
 ```
-# e.g.:
-# Daily plan for Biscuit (Golden Retriever):
-#   08:00 — Morning walk (30 min) [priority: high]
-#   09:00 — Feeding (10 min) [priority: high]
-#   ...
+Today's Schedule
+  07:30 — Bean: Breakfast (high, open)
+  08:00 — Mochi: Morning walk (high, open)
+  08:00 — Mochi: Medication (high, open)
+  18:30 — Bean: Evening play (medium, open)
+
+Conflict warnings
+  WARNING: Conflict at 08:00: Mochi — Morning walk; Mochi — Medication
 ```
 
 ## 🧪 Testing PawPal+
 
 ```bash
 # Run the full test suite:
-pytest
+python -m pytest
 
 # Run with coverage:
 pytest --cov
@@ -67,28 +70,36 @@ pytest --cov
 Sample test output:
 
 ```
-# Paste your pytest output here
+5 passed in 0.03s
 ```
 
 ## 📐 Smarter Scheduling
 
-> Fill in once you've implemented scheduling logic.
+PawPal+ uses `Scheduler` as the brain of the system. It retrieves every pet's tasks
+through `Owner.get_all_tasks()`, then sorts, filters, recurs, and warns about conflicts.
 
 | Feature | Method(s) | Notes |
 |---------|-----------|-------|
-| Task sorting | | e.g., by priority, duration |
-| Filtering | | e.g., skip tasks if time runs out |
-| Conflict handling | | e.g., overlapping time slots |
-| Recurring tasks | | e.g., daily vs. weekly |
+| Task sorting | `Scheduler.sort_by_time()` | Chronological `HH:MM` order |
+| Filtering | `Scheduler.filter_tasks()` | Filter by pet and completion status |
+| Conflict handling | `Scheduler.find_conflicts()` | Warns on exact time matches |
+| Recurring tasks | `Task.next_occurrence()`, `Scheduler.complete_task()` | Daily and weekly copies |
+
+## Implementation summary
+
+`Task` models an activity, `Pet` owns tasks, and `Owner` manages multiple pets.
+`Scheduler` coordinates the owner's complete task list. Streamlit stores the Owner in
+`st.session_state`, so the UI's pets and tasks survive reruns.
 
 ## 📸 Demo Walkthrough
 
 Describe your app in numbered steps so a reader can follow along without watching a video:
 
-1. <!-- Describe this step -->
-2. <!-- Describe this step -->
-3. <!-- Describe this step -->
-4. <!-- Describe this step -->
-5. <!-- Add more steps as needed -->
+1. Add one or more pets from the sidebar.
+2. Add care tasks with a time, priority, and recurrence.
+3. View the multi-pet schedule in chronological order.
+4. Read warning banners for exact-time conflicts.
+5. Complete recurring tasks to create their next occurrence.
 
-**Screenshot or video** *(optional)*: <!-- Insert a screenshot or link to a demo video here -->
+**Confidence level:** ★★★★☆ (4/5). Core behaviors are covered by automated tests;
+future work would test overlapping durations and persistence beyond one session.

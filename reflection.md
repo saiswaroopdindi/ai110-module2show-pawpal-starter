@@ -4,13 +4,13 @@
 
 **a. Initial design**
 
-- Briefly describe your initial UML design.
-- What classes did you include, and what responsibilities did you assign to each?
+- My UML has four classes: Owner manages pets, Pet owns tasks, Task represents one
+  care activity, and Scheduler reads all tasks and organizes them.
 
 **b. Design changes**
 
-- Did your design change during implementation?
-- If yes, describe at least one change and why you made it.
+- I added due dates, duration, priority, and pet ownership to Task, plus
+  Scheduler.complete_task(), to support recurrence and multi-pet messages.
 
 ---
 
@@ -18,13 +18,13 @@
 
 **a. Constraints and priorities**
 
-- What constraints does your scheduler consider (for example: time, priority, preferences)?
-- How did you decide which constraints mattered most?
+- It considers time, pet identity, completion status, and recurrence. Time is primary
+  because it creates the clearest daily view; priority remains available for display.
 
 **b. Tradeoffs**
 
-- Describe one tradeoff your scheduler makes.
-- Why is that tradeoff reasonable for this scenario?
+- Conflict detection checks exact matching start times, not overlapping durations.
+  This is simple and suitable here, while a production version should compare intervals.
 
 ---
 
@@ -32,13 +32,13 @@
 
 **a. How you used AI**
 
-- How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)?
-- What kinds of prompts or questions were most helpful?
+- AI helped brainstorm UML relationships, scaffold dataclasses, suggest sorting, and
+  draft tests. Prompts that named behavior and verification criteria were most useful.
 
 **b. Judgment and verification**
 
-- Describe one moment where you did not accept an AI suggestion as-is.
-- How did you evaluate or verify what the AI suggested?
+- I kept exact-time conflicts instead of accepting a complex interval scheduler. I
+  verified that choice with a duplicate-time test and the CLI demo.
 
 ---
 
@@ -46,13 +46,13 @@
 
 **a. What you tested**
 
-- What behaviors did you test?
-- Why were these tests important?
+- Tests cover completion, task addition, chronological sorting across pets, daily
+  recurrence, and duplicate-time conflicts—the core user-visible promises.
 
 **b. Confidence**
 
-- How confident are you that your scheduler works correctly?
-- What edge cases would you test next if you had more time?
+- I am 4/5 confident because all five tests pass and the CLI exercises multiple pets.
+  Next I would test invalid times, weekly recurrence, and overlapping durations.
 
 ---
 
@@ -60,12 +60,14 @@
 
 **a. What went well**
 
-- What part of this project are you most satisfied with?
+- I am most satisfied that the UI and CLI share one backend, especially the multi-pet
+  Owner-to-Scheduler relationship.
 
 **b. What you would improve**
 
-- If you had another iteration, what would you improve or redesign?
+- I would add persistent storage, interval-aware scheduling, and edit/delete controls.
 
 **c. Key takeaway**
 
-- What is one important thing you learned about designing systems or working with AI on this project?
+- I learned that context engineering and verification make AI useful, but the human
+  still owns interfaces, trade-offs, and final evidence.
